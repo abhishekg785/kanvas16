@@ -6,6 +6,7 @@ var LocalStrategy =require('passport-local').Strategy;
 var FacebookStrategy = require('passport-facebook').Strategy;
 var GoogleStrategy = require('passport-google-oauth2').Strategy;
 var authFile = require('../auth.js');
+var bcrypt = require('bcryptjs');
 
 //local Strategy
 passport.use(new LocalStrategy(function(username,password,done){
@@ -19,8 +20,8 @@ passport.use(new LocalStrategy(function(username,password,done){
     if(!user){
       return done(null,false);
     }
-    if(user.password != password){
-      res.send('password mismatch');
+    // if(user.password != password){
+      if(bcrypt.compareSync(password,user.password) === false){
       return done(null,false);
     }
     return done(null,user);   //call the serialize method

@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var userSchema = require('../models/userSchema');
 var mongoose = require('mongoose');
+var bcrypt = require('bcryptjs');
 
 router.get('/',function(req,res){
   res.render('register');
@@ -14,7 +15,7 @@ router.post('/',function(req,res){
     fname:user.fname,
     lname:user.lname,
     username:user.username,
-    password:user.password
+    password:bcrypt.hashSync(user.password)
    });
   newUser.save(function(err,data){
     if(!err){

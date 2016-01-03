@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+var multer = require('multer');
 
 //note !!! note !!! note !!!
 //so where this method came from
@@ -15,11 +16,11 @@ function isAuthenticate(req,res,next){
   }
 }
 
-router.get('/',isAuthenticate,function(req,res){
+router.get('/',function(req,res){
   res.render('uploadFile');
 });
 
-router.post('/',isAuthenticate,function(req,res){
+router.post('/',function(req,res){
   res.send("hello post uploadFile");
 });
 
