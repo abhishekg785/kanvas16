@@ -16,12 +16,32 @@ function isAuthenticate(req,res,next){
   }
 }
 
+var storage = multer.diskStorage({
+  destination: function(req,file,cb) {
+    cb(null,'submissions')
+  },
+  filename:function(req,file,cb){
+    cb(null,file.fieldname + '-'+Date.now())
+  }
+});
+
 router.get('/',function(req,res){
   res.render('uploadFile');
 });
 
+var upload = multer({storage : storage}).single('filename');
+
 router.post('/',function(req,res){
-  res.send("hello post uploadFile");
+  upload(req,res,function(err){
+    if(err){
+      console.log(err);
+      res.send('Error occured');
+    }
+    else{
+      console.log('done');
+      res.send('File uploaded successfully');
+    }
+  });
 });
 
 module.exports = router;
